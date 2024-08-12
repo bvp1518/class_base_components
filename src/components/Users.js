@@ -3,11 +3,11 @@ import User from './User';
 
 import classes from './Users.module.css';
 
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
+// const DUMMY_USERS = [
+//   { id: 'u1', name: 'Max' },
+//   { id: 'u2', name: 'Manuel' },
+//   { id: 'u3', name: 'Julie' },
+// ];
 
 
 // ===========================classbase component================
@@ -20,6 +20,13 @@ constructor() {
   };
 }
 
+componentDidUpdate() {
+    if (this.props.users.length === 0){
+    throw new Error("No users provided!");
+  }
+}
+
+
 toggleUsersHandler(){
   this.setState((curState) => {
     return { showUsers: !curState.showUsers};
@@ -27,7 +34,7 @@ toggleUsersHandler(){
 }
 
   render(){
-    // console.log('this',this.props);
+    console.log('this',this.props.users);
     
     const usersList = (
       <ul>
@@ -36,6 +43,8 @@ toggleUsersHandler(){
         ))}
       </ul>
     ); 
+ console.log("this.state.showUsers" , this.state.showUsers)
+
 
     return (
       <div className={classes.users}>

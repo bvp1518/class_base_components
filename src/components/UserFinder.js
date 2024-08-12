@@ -1,15 +1,16 @@
-import { Fragment, useState, useEffect,Component } from 'react';
+import { Fragment, useState, useEffect, Component } from 'react';
 
 import Users from './Users';
 import classes from './UserFinder.module.css';
 import UsersContext from '../store/users-context';
+import ErrorBoundry from './ErrorBoundry'
 
 
 
 // =========================class based component========================
 
 class UserFinder extends Component {
-  static contextType = UsersContext;
+    static contextType = UsersContext;
 
     constructor() {
         super();
@@ -20,31 +21,33 @@ class UserFinder extends Component {
     }
 
     componentDidMount() {
-        this.setState({filteredUsers:this.context.users});
+        this.setState({ filteredUsers: this.context.users });
     }
 
     componentDidUpdate(prevProps, prevState) {
-     if(prevState.searchTerm !== this.state.searchTerm){
-        this.setState({
-           filteredUsers: this.context.users.filter((user) => 
-            user.name.includes(this.state.searchTerm)
-        ),
-        });
-    }}
+        if (prevState.searchTerm !== this.state.searchTerm) {
+            this.setState({
+                filteredUsers: this.context.users.filter((user) =>
+                    user.name.includes(this.state.searchTerm)
+                ),
+            });
+        }
+    }
 
     searchChangeHandler(event) {
-        this.setState({searchTerm: event.target.value});
+        this.setState({ searchTerm: event.target.value });
     }
 
 
     render() {
         return (
             <Fragment>
-                
                 <div className={classes.finder}>
                     <input type='search' onChange={this.searchChangeHandler.bind(this)} />
                 </div>
-                <Users users={this.state.filteredUsers} />
+                <ErrorBoundry>
+                    <Users users={this.state.filteredUsers} />
+                </ErrorBoundry>
             </Fragment>
         );
     }
